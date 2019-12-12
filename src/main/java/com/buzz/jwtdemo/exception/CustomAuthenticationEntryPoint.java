@@ -1,4 +1,4 @@
-package com.buzz.jwtdemo.security;
+package com.buzz.jwtdemo.exception;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 /******************************************************************************************************
+ * 인증되지 않는 Request에 대한 문제해결
  * 컨트롤러 이전 필터링에서의 커스텀 오류 작성
  *****************************************************************************************************/
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {

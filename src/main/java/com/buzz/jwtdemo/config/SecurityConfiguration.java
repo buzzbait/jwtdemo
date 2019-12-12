@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.buzz.jwtdemo.security.CustomAuthenticationEntryPoint;
+import com.buzz.jwtdemo.exception.CustomAuthenticationEntryPoint;
 import com.buzz.jwtdemo.security.JwtAuthenticationFilter;
 import com.buzz.jwtdemo.security.JwtTokenProvider;
 
