@@ -15,17 +15,20 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 
 /******************************************************************************************************
- * 인증되지 않는 Request에 대한 문제해결
+ * 인증되지 않는 Request에 대한 문제해결(인증정보가 없는 경우)
  * 컨트롤러 이전 필터링에서의 커스텀 오류 작성
  *****************************************************************************************************/
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	private static Logger logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
 	
+	//response.sendRedirect("/exception/entrypoint") 로 Controller 를 호출 하거나 바로 HttpServletResponse 에 write 한다.
+	//HttpServletResponse 에 write 하는 것으로 구현
 	@Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException,ServletException {
-		logger.debug("commence ex :{}",ex.getMessage());
-        //response.sendRedirect("/exception/entrypoint");        
+		logger.debug("Filter Error :{}",ex.getMessage());
+		
+        //        
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         
