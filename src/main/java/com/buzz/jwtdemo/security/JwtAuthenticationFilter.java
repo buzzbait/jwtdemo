@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * **********************************************************************************************************************/
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	
+	private static Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 	
 	private JwtTokenProvider jwtTokenProvider;
 	 
@@ -30,6 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	// Request로 들어오는 Jwt Token의 유효성을 검증(jwtTokenProvider.validateToken)하는 filter를 filterChain에 등록합니다.
 	@Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+		
+		logger.debug("doFilterInternal......");
 		
 		String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
         if (token != null && jwtTokenProvider.validateToken(token)) {

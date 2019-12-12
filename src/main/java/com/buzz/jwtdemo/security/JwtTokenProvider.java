@@ -16,6 +16,7 @@ import com.buzz.jwtdemo.model.JwtUserDetail;
 import com.buzz.jwtdemo.service.CustomUserDetailService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -77,9 +78,12 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(JwtConstants.SIGNING_KEY).parseClaimsJws(jwtToken);            
             return !claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
-        } catch (Exception e) {
-        	logger.error("claims value : {}", e );
+        } catch (ExpiredJwtException expire) {
+        	logger.error("ExpiredJwtException : {}", expire.getMessage());
             return false;
+        } catch(Exception ex) {
+        	logger.error("validateToken Exception : {}", ex.getMessage());
+        	return false;
         }
     }
 }
