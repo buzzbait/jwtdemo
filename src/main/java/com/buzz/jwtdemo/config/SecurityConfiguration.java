@@ -10,7 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.buzz.jwtdemo.exception.CustomAuthenticationEntryPoint;
+import com.buzz.jwtdemo.exception.JwtAccessDeniedHandler;
+import com.buzz.jwtdemo.exception.JwtAuthenticationEntryPoint;
 import com.buzz.jwtdemo.security.JwtAuthenticationFilter;
 import com.buzz.jwtdemo.security.JwtTokenProvider;
 
@@ -34,7 +35,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin/*").hasRole("ADMIN")
                     .anyRequest().hasRole("USER") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
             .and()
-                    .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+            	.exceptionHandling().accessDeniedHandler(new JwtAccessDeniedHandler()) //Access권한 오류 핸들러
+            .and()
+            	.exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint()) //비정상적인 호출 오류 핸들러
             .and()            	
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣는다
  

@@ -18,4 +18,13 @@ public class FilterExceptionController {
         result.put("error_msg","허용되지 않은 URL 입니다");        
         return result;
     }
+	
+	@GetMapping(value = "/accessdenied")
+    public HashMap<String,Object> accessDenied() {
+        HashMap<String,Object> result = new HashMap<String,Object>();
+        
+        result.put("status_code", -1);
+        result.put("error_msg","보유권한으로는 접근이 불가능 합니다");        
+        return result;
+    }
 }
