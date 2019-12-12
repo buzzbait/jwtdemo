@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Authentication auth = jwtTokenProvider.getAuthentication(token);
+            //SecurityContextHolder에서는 보안 주체의 세부 정보를 포함하여 응용 프로그램의 현재 보안 컨텍스트에 대한 세부 정보가 저장된다
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 		// TODO 전처리 

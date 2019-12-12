@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+		
+    <!-- 개발자 환경 -->
+	<springProfile name="local">
+		
+		<!-- 콘솔프린트 모드 -->
+	    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		        <encoder>
+		            <!-- <pattern>%d{HH:mm:ss} %-5level %logger{80}:%L %M - %msg%n</pattern>  -->
+		            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] [%thread] %-5level %logger{36} - %msg%n</pattern>
+		        </encoder>	      	 
+		</appender>
+			
+	    <logger name="jdbc.sqlonly" level="debug" additivity="false">
+	        <appender-ref ref="STDOUT" />
+	    </logger>
+	
+	    <logger name="jdbc.resultsettable" level="debug" additivity="false">
+	        <appender-ref ref="STDOUT" />
+	    </logger>
+	
+	    <logger name="com.buzz.jwtdemo" level="debug" additivity="false">
+	        <appender-ref ref="STDOUT" />	        
+	    </logger>
+	
+	    <root level="error">
+	        <appender-ref ref="STDOUT" />
+	    </root>
+	</springProfile>	
+
+	
+</configuration>
