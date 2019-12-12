@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.buzz.jwtdemo.model.JwtUserDetail;
@@ -76,12 +75,10 @@ public class JwtTokenProvider {
     // Jwt 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(JwtConstants.SIGNING_KEY).parseClaimsJws(jwtToken);
-            
-            logger.debug("claims value : {}",claims );
-            
+            Jws<Claims> claims = Jwts.parser().setSigningKey(JwtConstants.SIGNING_KEY).parseClaimsJws(jwtToken);            
             return !claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
         } catch (Exception e) {
+        	logger.error("claims value : {}", e );
             return false;
         }
     }
