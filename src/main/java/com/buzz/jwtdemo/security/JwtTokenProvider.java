@@ -7,33 +7,32 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.buzz.jwtdemo.model.JwtUserDetail;
-import com.buzz.jwtdemo.service.CustomUserDetailService;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtTokenProvider {
 	
 	private static Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 	
-	@Autowired
-	private CustomUserDetailService userDetailsService;
+	//@Autowired
+	//private CustomUserDetailService userDetailsService;
 	
 	// Jwt 토큰 생성
     public String createToken(String userPk, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("roles", roles);
-        Date now = new Date();
+    
         return Jwts.builder()
                 .setClaims(claims) // 데이터
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 토큰 발행일자
@@ -76,14 +75,19 @@ public class JwtTokenProvider {
     // Jwt 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(JwtConstants.SIGNING_KEY).parseClaimsJws(jwtToken);            
-            return !claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
-        } catch (ExpiredJwtException expire) {
-        	logger.error("ExpiredJwtException : {}", expire.getMessage());
-            return false;
-        } catch(Exception ex) {
-        	logger.error("validateToken Exception : {}", ex.getMessage());
-        	return false;
+        	Jwts.parser().setSigningKey(JwtConstants.SIGNING_KEY).parseClaimsJws(jwtToken);
+            //Jws<Claims> claims = Jwts.parser().setSigningKey(JwtConstants.SIGNING_KEY).parseClaimsJws(jwtToken);            
+            //return !claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
+            return true;
+        } catch (ExpiredJwtException ex) {
+        	logger.error("Expired JWT token : {}", ex.getMessage());            
+        } catch(MalformedJwtException  ex) {
+        	logger.error("Invalid JWT token : {}", ex.getMessage());        	
+        }catch(UnsupportedJwtException ex) {
+        	logger.error("Unsupported JWT token : {}", ex.getMessage());        	
+        }catch(IllegalArgumentException ex) {
+        	logger.error("JWT Claims is Empty : {}", ex.getMessage());        	
         }
+        return false;
     }
 }

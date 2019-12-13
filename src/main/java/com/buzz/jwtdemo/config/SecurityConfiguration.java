@@ -1,7 +1,8 @@
 package com.buzz.jwtdemo.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,8 +20,16 @@ import com.buzz.jwtdemo.security.JwtTokenProvider;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	private static Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
+	
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired
+	private JwtAccessDeniedHandler jwtAccessDeniedHandler;
+	
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	
 	/*
 	 * [Filter Chain]
@@ -29,6 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
+		logger.debug("HttpSecurity configure........");
         http
             .httpBasic().disable() // rest api 이므로 기본설정 사용안함. 기본설정은 비인증시 로그인폼 화면으로 리다이렉트 된다.
             .csrf().disable() // rest api이므로 csrf 보안이 필요없으므로 disable처리.
@@ -40,9 +50,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin/*").hasRole("ADMIN") //admin 으로 시작 하는 URI 는 관리자만 접근 가능                    
                     .anyRequest().hasAnyRole("USER","ADMIN")  //그외 로그인이 인증된 모든 사용자 가능
             .and()
-            	.exceptionHandling().accessDeniedHandler(new JwtAccessDeniedHandler()) //Access권한 오류 핸들러
+            	.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler) //Access권한 오류 핸들러             
             .and()
-            	.exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint()) //비정상적인 호출 오류 핸들러
+            	.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint) //비정상적인 호출 오류 핸들러
             .and()            	
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // JwtAuthenticationFilter 를 UsernamePasswordAuthenticationFilter 이전에 등록한다
  

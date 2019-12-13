@@ -2,24 +2,26 @@ package com.buzz.jwtdemo.controller;
 
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.buzz.jwtdemo.service.UserService;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
 	
+	@Autowired
+	private UserService _userService;
+	
 	@GetMapping(value = "/info")
     public HashMap<String,Object> userInfo(@RequestParam String id) {
     	
-		HashMap<String,Object> result =  new HashMap<String,Object>();
-		
-		result.put("status_code", "0");
-		result.put("userName", id +  " : loginName");
-		
+		HashMap<String,Object> result =  _userService.info();		
     	return result;        
     }
 		
