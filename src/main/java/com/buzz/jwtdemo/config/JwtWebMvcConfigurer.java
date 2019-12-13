@@ -23,8 +23,6 @@ public class JwtWebMvcConfigurer implements WebMvcConfigurer{
 	@Bean
 	public MessageSource messageSource() {
 		
-		logger.debug("messageSource .............");
-		
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:messages/message");
 		messageSource.setDefaultEncoding("UTF-8");
@@ -38,7 +36,7 @@ public class JwtWebMvcConfigurer implements WebMvcConfigurer{
 	// 세션에 지역설정. default는 KOREAN = 'ko'
 	@Bean
 	public LocaleResolver localeResolver() {
-		logger.debug("localeResolver .............");
+		
 		SessionLocaleResolver slr = new SessionLocaleResolver();
         slr.setDefaultLocale(Locale.KOREAN);
 		return slr;
@@ -46,8 +44,7 @@ public class JwtWebMvcConfigurer implements WebMvcConfigurer{
 
 	// 지역설정을 변경하는 인터셉터. 요청시 파라미터에 lang 정보를 지정하면 언어가 변경됨.
 	@Bean 
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-		logger.debug("localeChangeInterceptor .............");
+    public LocaleChangeInterceptor localeChangeInterceptor() {		
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         return lci;
@@ -56,7 +53,7 @@ public class JwtWebMvcConfigurer implements WebMvcConfigurer{
 	//인터셉터를 시스템 레지스트리에 등록
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		logger.debug("addInterceptors .............");
+		
 		registry.addInterceptor(localeChangeInterceptor());
 	}
 }
