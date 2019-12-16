@@ -9,13 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
+import com.buzz.jwtdemo.common.JwtMessageKey;
+import com.buzz.jwtdemo.common.MessageUtil;
 import com.buzz.jwtdemo.common.ResponseKey;
 
 /******************************************************************************************************
@@ -24,9 +23,6 @@ import com.buzz.jwtdemo.common.ResponseKey;
  *****************************************************************************************************/
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler  {
-	
-	@Autowired
-	private MessageSource _messageSource;
 	
 	@Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException,
@@ -37,8 +33,8 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler  {
         
         HashMap<String, Object> responseMap  = new HashMap<String, Object>();
         
-        responseMap.put(ResponseKey.STATUS.keyName() , -1);
-        responseMap.put(ResponseKey.MESSAGE.keyName(),_messageSource.getMessage("response.forbidden",null,LocaleContextHolder.getLocale() ));
+        responseMap.put(ResponseKey.STATUS.keyName() , JwtMessageKey.REQUEST_NOTROLE );
+        responseMap.put(ResponseKey.MESSAGE.keyName(), MessageUtil.getMessage(JwtMessageKey.MSG_KEY_FORBIDDEN ));
         
         JSONObject json = new JSONObject(responseMap);
                 

@@ -11,14 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.buzz.jwtdemo.common.JwtMessageKey;
+import com.buzz.jwtdemo.common.MessageUtil;
 import com.buzz.jwtdemo.common.ResponseKey;
 
 
@@ -31,9 +29,7 @@ import com.buzz.jwtdemo.common.ResponseKey;
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	private static Logger _logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
-	@Autowired
-	private MessageSource _messageSource;
-	
+		
 	/******************************************************************************************************
 	 * OncePerRequestFilter doFilter 적용시 Jwt 인증 오류시 수행
 	 ******************************************************************************************************/
@@ -52,10 +48,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         if(expired != null) {
         	//인증키 유효기간 만료
         	responseMap.put(ResponseKey.STATUS.keyName() , JwtMessageKey.JWT_ERROR_EXPIRED);
-        	responseMap.put(ResponseKey.MESSAGE.keyName(),_messageSource.getMessage("response.expiredjwt",null,LocaleContextHolder.getLocale() ));
+        	responseMap.put(ResponseKey.MESSAGE.keyName(), MessageUtil.getMessage("response.expiredjwt"));
         }else {        
         	responseMap.put(ResponseKey.STATUS.keyName() , JwtMessageKey.JWT_ERROR_INVALID);
-        	responseMap.put(ResponseKey.MESSAGE.keyName(),_messageSource.getMessage("response.invalidjwt",null,LocaleContextHolder.getLocale() ));
+        	responseMap.put(ResponseKey.MESSAGE.keyName(),MessageUtil.getMessage("response.invalidjwt" ));
         }
         
         JSONObject json = new JSONObject(responseMap);

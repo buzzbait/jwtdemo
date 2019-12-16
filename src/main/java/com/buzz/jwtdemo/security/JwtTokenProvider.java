@@ -1,7 +1,6 @@
 package com.buzz.jwtdemo.security;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
