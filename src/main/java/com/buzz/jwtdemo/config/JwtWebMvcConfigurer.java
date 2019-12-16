@@ -32,9 +32,6 @@ public class JwtWebMvcConfigurer implements WebMvcConfigurer{
 		// 없는 메세지일 경우 예외를 발생시키는 대신 코드를 기본 메세지로 한다.
 		messageSource.setUseCodeAsDefaultMessage(true);
 		
-		//메시지 유틸에 객체 대입
-		MessageUtil.setMessageSource(messageSource);
-		
 		return messageSource;
 	}
 
