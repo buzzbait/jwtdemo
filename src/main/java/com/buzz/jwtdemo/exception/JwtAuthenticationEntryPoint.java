@@ -18,11 +18,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import com.buzz.jwtdemo.common.JwtMessageKey;
 import com.buzz.jwtdemo.common.ResponseKey;
 
 
 /******************************************************************************************************
  * 인증되지 않는 Request에 대한 문제해결(인증정보가 없는 경우)
+ * JWT 검증시 만료시간이 지났거나 검증 오류시 인증정보가 SecurityContextHolder 에 저장 되지 않은 경우
  * 컨트롤러 이전 필터링에서의 커스텀 오류 작성
  *****************************************************************************************************/
 @Component
@@ -41,8 +43,17 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         
         HashMap<String, Object> responseMap  = new HashMap<String, Object>();
         
-        responseMap.put(ResponseKey.STATUS.keyName() , -1);
-        responseMap.put(ResponseKey.MESSAGE.keyName(),_messageSource.getMessage("response.notauth",null,LocaleContextHolder.getLocale() ));
+        //인증키 유효기간 만료 여부 검사
+        final String expired = (String)request.getAttribute("expired");
+        
+        if(expired != null) {
+        	//인증키 유효기간 만료
+        	responseMap.put(ResponseKey.STATUS.keyName() , JwtMessageKey.JWT_ERROR_EXPIRED);
+        	responseMap.put(ResponseKey.MESSAGE.keyName(),_messageSource.getMessage("response.expiredjwt",null,LocaleContextHolder.getLocale() ));
+        }else {        
+        	responseMap.put(ResponseKey.STATUS.keyName() , JwtMessageKey.JWT_ERROR_INVALID);
+        	responseMap.put(ResponseKey.MESSAGE.keyName(),_messageSource.getMessage("response.invalidjwt",null,LocaleContextHolder.getLocale() ));
+        }
         
         JSONObject json = new JSONObject(responseMap);
         

@@ -1,6 +1,7 @@
 package com.buzz.jwtdemo.security;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 import com.buzz.jwtdemo.model.JwtUserDetail;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -73,14 +73,17 @@ public class JwtTokenProvider {
     }
  
     // Jwt 토큰의 유효성 + 만료일자 확인
-    public boolean validateToken(String jwtToken) {
+    public boolean validateToken(String jwtToken, HttpServletRequest  req) {
         try {
         	Jwts.parser().setSigningKey(JwtConstants.SIGNING_KEY).parseClaimsJws(jwtToken);
             //Jws<Claims> claims = Jwts.parser().setSigningKey(JwtConstants.SIGNING_KEY).parseClaimsJws(jwtToken);            
             //return !claims.getBody().getExpiration().before(new Date(System.currentTimeMillis()));
             return true;
         } catch (ExpiredJwtException ex) {
-        	logger.error("Expired JWT token : {}", ex.getMessage());            
+        	logger.error("Expired JWT token : {}", ex.getMessage());
+        	//토큰 유효기간 만료 처리를 위한 헤더 설정
+        	//AuthenticationEntryPoint 에서 별도 처리
+        	req.setAttribute("expired","Token Expired");
         } catch(MalformedJwtException  ex) {
         	logger.error("Invalid JWT token : {}", ex.getMessage());        	
         }catch(UnsupportedJwtException ex) {
@@ -90,4 +93,5 @@ public class JwtTokenProvider {
         }
         return false;
     }
+    
 }

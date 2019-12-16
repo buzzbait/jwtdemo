@@ -1,6 +1,7 @@
 package com.buzz.jwtdemo.security;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -37,13 +38,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		logger.debug("doFilterInternal......");
 		
 		String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
+        
+		if (token != null && jwtTokenProvider.validateToken(token,req)) {
             Authentication auth = jwtTokenProvider.getAuthentication(token);
             //SecurityContextHolder에서는 보안 주체의 세부 정보를 포함하여 응용 프로그램의 현재 보안 컨텍스트에 대한 세부 정보가 저장된다
+            //인증이 된 경우에만 SecurityContextHolder 에 저장 한다 
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
+         
 		// TODO 전처리 
 		chain.doFilter(req, res); 
 		// TODO 후처리		
 	}
+	
+	
 }
