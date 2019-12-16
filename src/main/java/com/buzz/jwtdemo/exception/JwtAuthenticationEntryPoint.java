@@ -34,9 +34,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	@Autowired
 	private MessageSource _messageSource;
 	
+	/******************************************************************************************************
+	 * OncePerRequestFilter doFilter 적용시 Jwt 인증 오류시 수행
+	 ******************************************************************************************************/
 	@Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException,ServletException {
-		_logger.debug("Filter Error :{}",ex.getMessage());
+		_logger.debug("Auth Error :{}",ex.getMessage());
 		       
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
