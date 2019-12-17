@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buzz.jwtdemo.common.JwtMessageKey;
-import com.buzz.jwtdemo.common.ResponseKey;
+import com.buzz.jwtdemo.common.ResponseConstants;
 import com.buzz.jwtdemo.service.UserService;
 
 /*******************************************************************************************************************
@@ -42,13 +42,11 @@ public class UserController {
 	//@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/secure")
-    public HashMap<String,Object> userSecure(@RequestParam String id) {
+    public ResponseEntity<HashMap<String,Object>> userSecure(@RequestParam String id) {
     	
 		HashMap<String,Object> result =  new HashMap<String,Object>();
 		
-		result.put(ResponseKey.STATUS.keyName(), "0");
-		result.put("desc", "secure method...");
-		
-    	return result;        
+		result.put(ResponseConstants.STATUS, ResponseConstants.RESULT_SUCCESS);				
+		return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.OK);    
     }
 }

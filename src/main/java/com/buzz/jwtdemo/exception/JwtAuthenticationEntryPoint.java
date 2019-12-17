@@ -15,11 +15,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import com.buzz.jwtdemo.common.JwtMessageKey;
+
 import com.buzz.jwtdemo.common.MessageUtil;
 import com.buzz.jwtdemo.common.ResponseConstants;
-import com.buzz.jwtdemo.common.ResponseKey;
-
 
 /******************************************************************************************************
  * 인증되지 않는 Request에 대한 문제해결(인증정보가 없는 경우)
