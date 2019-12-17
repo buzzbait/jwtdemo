@@ -2,7 +2,8 @@ package com.buzz.jwtdemo.exception;
 
 import java.util.HashMap;
 
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,7 +11,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.buzz.jwtdemo.common.JwtMessageKey;
 import com.buzz.jwtdemo.common.MessageUtil;
-import com.buzz.jwtdemo.common.ResponseKey;
+import com.buzz.jwtdemo.common.ResponseConstants;
+
 
 @RestControllerAdvice
 public class JwtControllerAdvice {
@@ -19,12 +21,13 @@ public class JwtControllerAdvice {
 	 * @PreAuthorize 어노테이션이 사용된 컨트롤러중 권한이 없어서 발생하는 오류 Catch....... 
 	 **********************************************************************************************/
 	@ExceptionHandler(AccessDeniedException.class) 
-	public HashMap<String,Object> accessDeniedException() {
+	public ResponseEntity<HashMap<String,Object>> accessDeniedException() {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 	        
-	    result.put(ResponseKey.STATUS.keyName(), JwtMessageKey.REQUEST_NOTROLE);
-	    result.put(ResponseKey.MESSAGE.keyName(),MessageUtil.getMessage(JwtMessageKey.MSG_KEY_FORBIDDEN) );        
-	    return result;
+		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_NOTROLE);
+	    result.put(ResponseConstants.MESSAGE, MessageUtil.getMessage(JwtMessageKey.MSG_KEY_FORBIDDEN));
+	            
+	    return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.FORBIDDEN);
 	}	
 	
 	/**********************************************************************************************
@@ -34,26 +37,26 @@ public class JwtControllerAdvice {
 	 * spring.resources.add-mappings=false	 
 	 **********************************************************************************************/
 	@ExceptionHandler(NoHandlerFoundException.class)
-	public HashMap<String,Object> noHandlerFoundException() {
+	public ResponseEntity<HashMap<String,Object>>  noHandlerFoundException() {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 	        
-		result.put(ResponseKey.STATUS.keyName(), JwtMessageKey.REQUEST_NOTFOUND);
-	    result.put(ResponseKey.MESSAGE.keyName(), MessageUtil.getMessage(JwtMessageKey.MSG_KEY_NOTFOUND) );
+		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_NOTFOUND);
+	    result.put(ResponseConstants.MESSAGE, MessageUtil.getMessage(JwtMessageKey.MSG_KEY_NOTFOUND));
 	            
-	    return result;
+	    return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.NOT_FOUND);
 	}
 	
 	/**********************************************************************************************
 	 * 일반적인 오류	 
 	 **********************************************************************************************/
 	@ExceptionHandler(Exception.class)
-	public HashMap<String,Object> normalException() {
+	public ResponseEntity<HashMap<String,Object>> normalException() {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 	        
-		result.put(ResponseKey.STATUS.keyName(), JwtMessageKey.REQUEST_ERROR);
-	    result.put(ResponseKey.MESSAGE.keyName(),MessageUtil.getMessage(JwtMessageKey.MSG_KEY_ERROR));
+		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_ERROR);
+	    result.put(ResponseConstants.MESSAGE, MessageUtil.getMessage(JwtMessageKey.MSG_KEY_ERROR));
 	            
-	    return result;
+	    return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	 
 }

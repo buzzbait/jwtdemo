@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.buzz.jwtdemo.common.JwtMessageKey;
 import com.buzz.jwtdemo.common.MessageUtil;
+import com.buzz.jwtdemo.common.ResponseConstants;
 import com.buzz.jwtdemo.common.ResponseKey;
 
 
@@ -47,11 +48,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         
         if(expired != null) {
         	//인증키 유효기간 만료
-        	responseMap.put(ResponseKey.STATUS.keyName() , JwtMessageKey.JWT_ERROR_EXPIRED);
-        	responseMap.put(ResponseKey.MESSAGE.keyName(), MessageUtil.getMessage("response.expiredjwt"));
+        	responseMap.put( ResponseConstants.STATUS , ResponseConstants.RESULT_JWTEXPIRED);
+        	responseMap.put( ResponseConstants.MESSAGE, MessageUtil.getMessage("response.expiredjwt"));
         }else {        
-        	responseMap.put(ResponseKey.STATUS.keyName() , JwtMessageKey.JWT_ERROR_INVALID);
-        	responseMap.put(ResponseKey.MESSAGE.keyName(),MessageUtil.getMessage("response.invalidjwt" ));
+        	responseMap.put(ResponseConstants.STATUS  ,ResponseConstants.RESULT_JWTINVALID);
+        	responseMap.put(ResponseConstants.MESSAGE ,MessageUtil.getMessage("response.invalidjwt" ));
         }
         
         JSONObject json = new JSONObject(responseMap);

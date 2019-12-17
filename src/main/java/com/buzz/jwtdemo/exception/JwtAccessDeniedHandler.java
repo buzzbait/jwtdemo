@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.buzz.jwtdemo.common.JwtMessageKey;
 import com.buzz.jwtdemo.common.MessageUtil;
-import com.buzz.jwtdemo.common.ResponseKey;
+import com.buzz.jwtdemo.common.ResponseConstants;
 
 /******************************************************************************************************
  * 허용되지 않은 URL 에 접근하는 경우 처리 
@@ -33,8 +33,8 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler  {
         
         HashMap<String, Object> responseMap  = new HashMap<String, Object>();
         
-        responseMap.put(ResponseKey.STATUS.keyName() , JwtMessageKey.REQUEST_NOTROLE );
-        responseMap.put(ResponseKey.MESSAGE.keyName(), MessageUtil.getMessage(JwtMessageKey.MSG_KEY_FORBIDDEN ));
+        responseMap.put(ResponseConstants.STATUS , ResponseConstants.RESULT_NOTROLE);
+        responseMap.put(ResponseConstants.MESSAGE ,MessageUtil.getMessage(JwtMessageKey.MSG_KEY_FORBIDDEN ));
         
         JSONObject json = new JSONObject(responseMap);
                 

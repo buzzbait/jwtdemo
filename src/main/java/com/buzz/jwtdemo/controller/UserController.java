@@ -3,14 +3,22 @@ package com.buzz.jwtdemo.controller;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.buzz.jwtdemo.common.JwtMessageKey;
+import com.buzz.jwtdemo.common.ResponseKey;
 import com.buzz.jwtdemo.service.UserService;
 
+/*******************************************************************************************************************
+ * API 버저닝은 URL/서비스명/버저닝/메소드명
+ * ex) api.jwtservice.com/user/v1/info
+ *******************************************************************************************************************/
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -18,12 +26,13 @@ public class UserController {
 	@Autowired
 	private UserService _userService;
 	
-	@GetMapping(value = "/info")
-    public HashMap<String,Object> userInfo(@RequestParam String id) {
+	@GetMapping({"/v1/info", "/v1.5/info"})
+    public ResponseEntity<HashMap<String,Object>> userInfo(@RequestParam String id) {
     	
 		HashMap<String,Object> result =  _userService.info();		
-    	return result;        
+    	return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.OK);        
     }
+	
 		
 	/*
 	 * @Secured는 표현식 사용할 수 없고,@PreAuthroize는 표현식 사용 가능
@@ -37,7 +46,7 @@ public class UserController {
     	
 		HashMap<String,Object> result =  new HashMap<String,Object>();
 		
-		result.put("status_code", "0");
+		result.put(ResponseKey.STATUS.keyName(), "0");
 		result.put("desc", "secure method...");
 		
     	return result;        
