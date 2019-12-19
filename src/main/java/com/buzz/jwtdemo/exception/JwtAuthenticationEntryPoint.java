@@ -48,7 +48,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         	//인증키 유효기간 만료
         	responseMap.put( ResponseConstants.STATUS , ResponseConstants.RESULT_JWTEXPIRED);
         	responseMap.put( ResponseConstants.MESSAGE, MessageUtil.getMessage("response.expiredjwt"));
-        }else {        
+        }else {
+        	//인증키 형식 오류
         	responseMap.put(ResponseConstants.STATUS  ,ResponseConstants.RESULT_JWTINVALID);
         	responseMap.put(ResponseConstants.MESSAGE ,MessageUtil.getMessage("response.invalidjwt" ));
         }

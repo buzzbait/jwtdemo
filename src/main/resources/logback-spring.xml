@@ -14,21 +14,23 @@
 		        </encoder>	      	 
 		</appender>
 			
-	    <logger name="jdbc.sqlonly" level="debug" additivity="false">
-	        <appender-ref ref="STDOUT" />
-	    </logger>
-	
-	    <logger name="jdbc.resultsettable" level="debug" additivity="false">
-	        <appender-ref ref="STDOUT" />
-	    </logger>
-	
+		<logger name="jdbc" level="OFF"/>
+		<logger name="jdbc.sqlonly" level="OFF"/>
+		<logger name="jdbc.audit" level="OFF"/>		
+		<logger name="jdbc.resultset" level="OFF"/>
+		<logger name="jdbc.connection" level="OFF"/>
+		<logger name="jdbc.sqltiming" level="DEBUG"/>		
+		<logger name="jdbc.resultsettable" level="DEBUG"/>			
+	    
 	    <logger name="com.buzz.jwtdemo" level="debug" additivity="false">
 	        <appender-ref ref="STDOUT" />	        
 	    </logger>
-	
+	    
 	    <root level="error">
 	        <appender-ref ref="STDOUT" />
 	    </root>
+	    
+	    
 	</springProfile>	
 
 	

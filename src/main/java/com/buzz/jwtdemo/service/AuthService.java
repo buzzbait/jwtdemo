@@ -1,40 +1,61 @@
 package com.buzz.jwtdemo.service;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.buzz.jwtdemo.common.ResponseConstants;
 import com.buzz.jwtdemo.model.JwtUserDetail;
+import com.buzz.jwtdemo.model.Member;
+import com.buzz.jwtdemo.repository.MemberRepository;
 import com.buzz.jwtdemo.repository.UserRepo;
 import com.buzz.jwtdemo.security.JwtTokenProvider;
+
 
 @Service
 public class AuthService {
 	
-	private static Logger logger = LoggerFactory.getLogger(AuthService.class);
+	private static Logger _logger = LoggerFactory.getLogger(AuthService.class);
 	
 	@Autowired
-	private JwtTokenProvider jwtTokenProvider; 
+	private JwtTokenProvider _jwtTokenProvider; 
 	
 	@Autowired
-	private UserRepo userRepo;
+	private UserRepo _userRepo;
+	
+	@Autowired
+	private MemberRepository _memberRepository;
 	
 	public HashMap<String,Object> signin(String userId,String userPass){
 		HashMap<String,Object> result =  new HashMap<String,Object>();
 		
-		JwtUserDetail findUser = userRepo.findbyId(userId);
+		JwtUserDetail findUser = _userRepo.findbyId(userId);
 		//사용자 검증 진행
 		//사용자가 인증되면 인증키를 발급한다.
+				
 		
-		String tokenValue = this.jwtTokenProvider.createToken(findUser.getUsername(),findUser.getRoles());
-		
-		result.put("status_code", 0);
-		result.put("tokenValue", tokenValue);
-		
-		logger.debug("토큰 : {}",tokenValue);
+		Optional<Member> optionalMember = _memberRepository.findByLoginId(userId);
+		if(optionalMember.isPresent()) {
+			//멤버가 존재 하는 경우
+			Member loinMemeber = optionalMember.get();
+			
+			String loginPass = loinMemeber.getLoginPass();
+			
+			_logger.debug("LOGIN PASS : {}",loginPass);
+			
+			String tokenValue = this._jwtTokenProvider.createToken(findUser.getUsername(),findUser.getRoles());
+			result.put(ResponseConstants.STATUS, ResponseConstants.RESULT_SUCCESS);
+			result.put("tokenValue", tokenValue);
+		}else {
+			result.put(ResponseConstants.STATUS, ResponseConstants.RESULT_ERROR);
+			result.put(ResponseConstants.STATUS, "사용자 정보가 없습니다.");
+		}
+				
 		
 		return result;
 	}

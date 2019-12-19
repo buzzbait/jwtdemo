@@ -65,11 +65,47 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- MariaDB -->
+		<dependency>
+		    <groupId>org.mariadb.jdbc</groupId>
+		    <artifactId>mariadb-java-client</artifactId>
+		    <version>2.5.2</version>
+		</dependency>
+		
+		<!-- hikariCp -->
+		<dependency>
+	    	<groupId>com.zaxxer</groupId>
+		    <artifactId>HikariCP</artifactId>
+		    <version>3.4.1</version>
+		</dependency>		
+		
 		<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
 		<dependency>
 		    <groupId>com.googlecode.json-simple</groupId>
 		    <artifactId>json-simple</artifactId>
 		    <version>1.1.1</version>
+		</dependency>		
+		
+		<!-- spring-boot-starter-data-jpa -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		    <version>2.2.2.RELEASE</version>
+		</dependency>
+		
+		<!-- Getter/Setter 방지 -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.10</version>
+		    <scope>provided</scope>
+		</dependency>				
+		
+		<!-- 쿼리로그 -->
+		<dependency>
+		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+		    <version>1.16</version>
 		</dependency>		
 		
 	</dependencies>

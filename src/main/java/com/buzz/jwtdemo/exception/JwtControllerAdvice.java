@@ -18,7 +18,11 @@ import com.buzz.jwtdemo.common.ResponseConstants;
 public class JwtControllerAdvice {
 
 	/**********************************************************************************************
-	 * @PreAuthorize 어노테이션이 사용된 컨트롤러중 권한이 없어서 발생하는 오류 Catch....... 
+	 * @PreAuthorize 어노테이션이 사용된 컨트롤러중 권한이 없어서 발생하는 오류 Catch.......
+	 * API 주소레벨 권한은 있지만 메소드 레벨에 권한이 없는 경우 
+	 * api.jwtserver.com/user/v1/secure 의 URI 에서 USER 권한으로 요청하는 경우
+	 * api.jwtserver.com/user/* 에 대해서 USER 롤으로 접근이 가능 하고 /sercure 는 ADMIN 만 
+	 * 접근이 가능 한 경우 
 	 **********************************************************************************************/
 	@ExceptionHandler(AccessDeniedException.class) 
 	public ResponseEntity<HashMap<String,Object>> accessDeniedException() {
