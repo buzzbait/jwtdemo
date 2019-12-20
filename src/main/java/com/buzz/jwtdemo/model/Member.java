@@ -1,11 +1,16 @@
 package com.buzz.jwtdemo.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
@@ -51,4 +56,15 @@ public class Member {
 	private String loginId;
 	private String loginPass;
 	private LocalDateTime crtDtm;
+	
+	/********************************************************************************************************
+	 * 매핑은 일단(무조건) 최대한 단방향으로 설계 한다
+	 * fetch는 기본적으로 LAZY 로 발라버려라...(성능 이슈 특별한 경우에만  다른 값으로 설정)
+	 * 멤버가 N개의 롤을 소유 할수 있기 때문에 1:N 관계 @One(Member)ToMany(MemberRole)	  
+	 * @JoinColumn 은 클래스에 선언된 멤버변수명으로 지정
+	 ********************************************************************************************************/	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "memberId") //MemberRole 클래스의 memberId 변수에 조인 설정
+	private List<MemberRole> memberRoles = new ArrayList<MemberRole>();
+	
 }
