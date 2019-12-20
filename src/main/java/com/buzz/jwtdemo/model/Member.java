@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.AccessLevel;
+import lombok.Builder;
 
 /**********************************************************************************************************
  * @Entity : 해당클래스의 인스턴스들이 엔티티임을 명시한다.(javax.persistence.Entity)
@@ -39,6 +44,7 @@ import lombok.AccessLevel;
  * EntityManager 가 Entity 를 사용하기 위해선 기본 생성자가 반드시 필요한데 프로그램 내에 아무곳에서나 
  * Entity 를 생성하지 않도록 lombok lib 에서 제공하는 @NoArgsConstructor 어노테이션에 
  * access = AccessLevel.PROTECTED 속성을 정의
+ * 기본매핑 네이밍 규칙은 Entity(camelCase) - Table(SNAME_HEAD) 이다
  **********************************************************************************************************/
 
 @Entity
@@ -55,6 +61,9 @@ public class Member {
 	
 	private String loginId;
 	private String loginPass;
+	
+	@Basic(optional = false)
+	@Column(name = "CRT_DTM", insertable = false, updatable = false)	
 	private LocalDateTime crtDtm;
 	
 	/********************************************************************************************************
@@ -64,7 +73,13 @@ public class Member {
 	 * @JoinColumn 은 클래스에 선언된 멤버변수명으로 지정
 	 ********************************************************************************************************/	
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "memberId") //MemberRole 클래스의 memberId 변수에 조인 설정
+	@JoinColumn(name = "memberId") //MemberRole 의 FK(memberId)에 조인 설정
 	private List<MemberRole> memberRoles = new ArrayList<MemberRole>();
 	
+	@Builder
+	public Member(String loginId, String loginPass,List<MemberRole> memberRoles) {
+		this.loginId = loginId;
+	    this.loginPass = loginPass;
+	    this.memberRoles = memberRoles;
+	}
 }

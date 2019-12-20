@@ -2,11 +2,15 @@ package com.buzz.jwtdemo.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -31,6 +35,8 @@ public class Role{
 	private String roleName;
 	private String roleDesc;
 	
+	@Basic(optional = false)
+	@Column(name = "CRT_DTM", insertable = false, updatable = false)	
 	private LocalDateTime crtDtm;
 	
 }
