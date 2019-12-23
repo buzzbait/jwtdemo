@@ -1,8 +1,11 @@
 package com.buzz.jwtdemo.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,7 @@ import com.buzz.jwtdemo.model.Member;
 import com.buzz.jwtdemo.model.MemberRole;
 import com.buzz.jwtdemo.model.Role;
 import com.buzz.jwtdemo.repository.MemberRepository;
+import com.buzz.jwtdemo.repository.MemberRoleRepository;
 import com.buzz.jwtdemo.repository.UserRepo;
 import com.buzz.jwtdemo.security.JwtTokenProvider;
 
@@ -33,10 +37,11 @@ public class AuthService {
 	@Autowired
 	private MemberRepository _memberRepository;
 	
+	@Autowired
+	private MemberRoleRepository _memberRoleRepository;
+	
 	public HashMap<String,Object> signin(String userId,String userPass){
 		HashMap<String,Object> result =  new HashMap<String,Object>();
-		
-		JwtUserDetail findUser = _userRepo.findbyId(userId);
 		//사용자 검증 진행
 		//사용자가 인증되면 인증키를 발급한다.
 				
@@ -45,20 +50,18 @@ public class AuthService {
 		if(optionalMember.isPresent()) {
 			//멤버가 존재 하는 경우
 			Member loinMemeber = optionalMember.get();
+						
+			_logger.debug("사용자 검증됨.........");
+						
+			//권한 검색(N건)
+			List<MemberRole> memberRoleList =  _memberRoleRepository.findByMember(loinMemeber);			
 			
-			String loginPass = loinMemeber.getLoginPass();
-			
-			_logger.debug("LOGIN PASS : {}",loginPass);
-			
-			List<MemberRole > memberRoles = loinMemeber.getMemberRoles();			
-			
-			memberRoles.forEach((role) -> {
-				Role userRole = role.getRole();
-				_logger.debug("HAS ROLE : {}-{}",userRole.getRoleName(),userRole.getRoleDesc()  );
-			});
-			
-			
-			String tokenValue = this._jwtTokenProvider.createToken(findUser.getUsername(),findUser.getRoles());
+			//Spring Security 는 권한인증에 "ROLE_" 이 붙는다.
+			List<String> roleList = memberRoleList.stream()
+									.map(v -> "ROLE_" + v.getRole().getRoleName().toString())
+									.collect(Collectors.toList());			
+									
+			String tokenValue = this._jwtTokenProvider.createToken(loinMemeber.getLoginId(),roleList);
 			result.put(ResponseConstants.STATUS, ResponseConstants.RESULT_SUCCESS);
 			result.put("tokenValue", tokenValue);
 		}else {

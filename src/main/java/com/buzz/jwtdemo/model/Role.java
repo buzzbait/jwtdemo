@@ -1,16 +1,17 @@
 package com.buzz.jwtdemo.model;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.buzz.jwtdemo.enumerate.RoleName;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -32,11 +33,15 @@ public class Role{
     @GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	
-	private String roleName;
+	@Enumerated(EnumType.STRING)
+    private RoleName roleName;
+		
 	private String roleDesc;
 	
-	@Basic(optional = false)
-	@Column(name = "CRT_DTM", insertable = false, updatable = false)	
-	private LocalDateTime crtDtm;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(insertable = false, updatable = false)
+	private java.util.Date crtDtm;
 	
 }
+
+
