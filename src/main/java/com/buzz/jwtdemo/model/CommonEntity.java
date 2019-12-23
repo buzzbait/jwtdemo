@@ -7,10 +7,15 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import lombok.Getter;
+import lombok.Setter;
 /********************************************************************************************************************
  * 모든 Entity 에서 공통으로 사용하는 필드 정의
  * 해당 Entity 에서 상속 받아서 사용 한다.
  ********************************************************************************************************************/
+@Getter
+@Setter
 @MappedSuperclass
 public class CommonEntity {
 	@Id

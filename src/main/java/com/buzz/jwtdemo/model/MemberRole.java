@@ -45,15 +45,14 @@ public class MemberRole {
 	private Member member;
 	
 	/********************************************************************************************************
-	 * meber <-> memberrole <-> role
+	 * member <-> memberrole <-> role
 	 * memberrole 테이블은  member 가 가지고 있는 롤정보를 매핑해주는 테이블,role 은 권한정보 관리 테이블
 	 * FK는 자신의 테이블(MemberRole) 에 있다.
 	 ********************************************************************************************************/
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY,optional = false)
 	@JoinColumn(name = "ROLE_ID")
 	private Role role;
-	
-	
+		
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(insertable = false, updatable = false)
 	private java.util.Date crtDtm;

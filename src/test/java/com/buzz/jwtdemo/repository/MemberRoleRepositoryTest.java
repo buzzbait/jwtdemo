@@ -39,31 +39,22 @@ class MemberRoleRepositoryTest {
 	@Autowired
 	private MemberRoleRepository _memberRoleRepository;
 
-	@Disabled
+	//@Disabled
 	@Test
 	void test_findByMember() {
-		Optional<Member> optMember =  _memberRepository.findByLoginId("demo");
-		if(optMember.isPresent()) {
-			//assertThat(optMember.get().getLoginId(), is("demo"));
-			Member member = optMember.get();
-			String  loginId =  member.getLoginId();
-			assertEquals("demo", loginId );
-			
-			List<MemberRole> memberRoles =  _memberRoleRepository.findByMember(member);
-			
-			assertEquals(2, memberRoles.size());
-			
-			memberRoles.forEach((memberRole) -> {				
-				_logger.debug( "FIND LOGIN ID : {}-{}", memberRole.getMember().getLoginId(),memberRole.getRole().getRoleName().toString()  );
-			});
-			
-		}else {
-			fail("NOT FOUND...");
-		}
+		
+		//Member member = Member.builder().loginId("test").build();
+		List<MemberRole> memberRoles =  _memberRoleRepository.findByMemberId(1L);		
+		//List<MemberRole> memberRoles =  _memberRoleRepository.findByMemberLoginId("demo");
+		
+		assertEquals(2, memberRoles.size());
+		
+		//Optional<MemberRole> optMemberRoles =  _memberRoleRepository.findById(Long.valueOf(1));		
+		//assertEquals(true, optMemberRoles.isPresent());
 	}
 
-	@Rollback(false)
 	@Disabled
+	@Rollback(false)	
 	@Test
 	void test_addNewMember() {
 		//롤 검색
@@ -72,22 +63,23 @@ class MemberRoleRepositoryTest {
 			fail("ROLE NOT FOUND...");		
 		}
 		
-		Optional<Role> optRole2 = _roleRepository.findById(Long.valueOf(2));
-		
-		Member newMember = Member.builder().loginId("test").loginPass("test1111").build();		
-		_memberRepository.save(newMember);
-		
-		MemberRole newMemberRole1 =  MemberRole.builder().member(newMember).role(optRole1.get()).build();		
-		_memberRoleRepository.save(newMemberRole1);
-		
+		//ENTITY 정의
+		Optional<Role> optRole2 = _roleRepository.findById(Long.valueOf(2));		
+		Member newMember = Member.builder().loginId("test1122").loginPass("test1111").build();		
+				
+		MemberRole newMemberRole1 =  MemberRole.builder().member(newMember).role(optRole1.get()).build();					
 		MemberRole newMemberRole2 =  MemberRole.builder().member(newMember).role(optRole2.get()).build();		
+		
+		//INSERT.......
+		_memberRepository.save(newMember);
+		_memberRoleRepository.save(newMemberRole1);
 		_memberRoleRepository.save(newMemberRole2);
 		
-		assertEquals("test", newMemberRole1.getMember().getLoginId());
+		assertEquals("test1111", newMemberRole1.getMember().getLoginId());
 		
 	}
 	
-	//@Disabled
+	@Disabled
 	//@Rollback(false)
 	@Test
 	void test_removeMember() {

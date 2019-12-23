@@ -1,27 +1,20 @@
 package com.buzz.jwtdemo.service;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.buzz.jwtdemo.common.ResponseConstants;
-import com.buzz.jwtdemo.model.JwtUserDetail;
 import com.buzz.jwtdemo.model.Member;
 import com.buzz.jwtdemo.model.MemberRole;
-import com.buzz.jwtdemo.model.Role;
 import com.buzz.jwtdemo.repository.MemberRepository;
 import com.buzz.jwtdemo.repository.MemberRoleRepository;
-import com.buzz.jwtdemo.repository.UserRepo;
 import com.buzz.jwtdemo.security.JwtTokenProvider;
-
 
 @Service
 public class AuthService {
@@ -30,9 +23,6 @@ public class AuthService {
 	
 	@Autowired
 	private JwtTokenProvider _jwtTokenProvider; 
-	
-	@Autowired
-	private UserRepo _userRepo;
 	
 	@Autowired
 	private MemberRepository _memberRepository;
@@ -53,8 +43,11 @@ public class AuthService {
 						
 			_logger.debug("사용자 검증됨.........");
 						
-			//권한 검색(N건)
-			List<MemberRole> memberRoleList =  _memberRoleRepository.findByMember(loinMemeber);			
+						
+			//권한 검색(N건)			
+			List<MemberRole> memberRoleList =  _memberRoleRepository.findByMember(loinMemeber);
+			//List<MemberRole> memberRoleList =  _memberRoleRepository.findByMemberId(memerId);			
+			//List<MemberRole> memberRoleList =  _memberRoleRepository.findByMemberLoginId(userId);
 			
 			//Spring Security 는 권한인증에 "ROLE_" 이 붙는다.
 			List<String> roleList = memberRoleList.stream()
