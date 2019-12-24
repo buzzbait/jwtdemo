@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.buzz.jwtdemo.common.ResponseConstants;
-import com.buzz.jwtdemo.model.Member;
-import com.buzz.jwtdemo.model.MemberRole;
-import com.buzz.jwtdemo.repository.MemberRepository;
-import com.buzz.jwtdemo.repository.MemberRoleRepository;
+import com.buzz.jwtdemo.domain.member.MemberEntity;
+import com.buzz.jwtdemo.domain.member.MemberEntityRepository;
+import com.buzz.jwtdemo.domain.memberrole.MemberRoleEntity;
+import com.buzz.jwtdemo.domain.memberrole.MemberRoleEntityRepository;
 import com.buzz.jwtdemo.security.JwtTokenProvider;
 
 @Service
@@ -25,10 +25,10 @@ public class AuthService {
 	private JwtTokenProvider _jwtTokenProvider; 
 	
 	@Autowired
-	private MemberRepository _memberRepository;
+	private MemberEntityRepository _memberRepository;
 	
 	@Autowired
-	private MemberRoleRepository _memberRoleRepository;
+	private MemberRoleEntityRepository _memberRoleRepository;
 	
 	public HashMap<String,Object> signin(String userId,String userPass){
 		HashMap<String,Object> result =  new HashMap<String,Object>();
@@ -36,22 +36,22 @@ public class AuthService {
 		//사용자가 인증되면 인증키를 발급한다.
 				
 		//DB검색
-		Optional<Member> optionalMember = _memberRepository.findByLoginId(userId);
-		if(optionalMember.isPresent()) {
+		Optional<MemberEntity> optMemberEntity = _memberRepository.findByLoginId(userId);
+		if(optMemberEntity.isPresent()) {
 			//멤버가 존재 하는 경우
-			Member loinMemeber = optionalMember.get();
+			MemberEntity loinMemeber = optMemberEntity.get();
 						
 			_logger.debug("사용자 검증됨.........");
 						
 						
 			//권한 검색(N건)			
-			List<MemberRole> memberRoleList =  _memberRoleRepository.findByMember(loinMemeber);
+			List<MemberRoleEntity> memberRoleEntityList =  _memberRoleRepository.findByMember(loinMemeber);
 			//List<MemberRole> memberRoleList =  _memberRoleRepository.findByMemberId(memerId);			
 			//List<MemberRole> memberRoleList =  _memberRoleRepository.findByMemberLoginId(userId);
 			
 			//Spring Security 는 권한인증에 "ROLE_" 이 붙는다.
-			List<String> roleList = memberRoleList.stream()
-									.map(v -> "ROLE_" + v.getRole().getRoleName().toString())
+			List<String> roleList = memberRoleEntityList.stream()
+									.map(v -> "ROLE_" + v.getRoleName().toString())
 									.collect(Collectors.toList());			
 									
 			String tokenValue = this._jwtTokenProvider.createToken(loinMemeber.getLoginId(),roleList);

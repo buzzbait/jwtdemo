@@ -1,22 +1,22 @@
-package com.buzz.jwtdemo.model;
+package com.buzz.jwtdemo.domain.member;
 
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
+import com.buzz.jwtdemo.domain.BaseCommonEntity;
+import com.buzz.jwtdemo.enumerate.ActiveStatus;
+import com.buzz.jwtdemo.enumerate.MemberLevel;
+import com.buzz.jwtdemo.enumerate.RoleName;
+
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.AccessLevel;
-import lombok.Builder;
 
 /**********************************************************************************************************
  * @Entity : 해당클래스의 인스턴스들이 엔티티임을 명시한다.(javax.persistence.Entity)
@@ -47,14 +47,21 @@ import lombok.Builder;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = {"id", "loginId"})
-public class Member extends CommonEntity {
+public class MemberEntity extends BaseCommonEntity {
 		
 	private String loginId;
 	private String loginPass;
 	
+	@Enumerated(EnumType.ORDINAL)
+    private ActiveStatus activeStatus;		
+	
+	@Enumerated(EnumType.ORDINAL)
+    private MemberLevel memberLevel;
+	
 	@Builder
-	public Member(String loginId, String loginPass) {
+	public MemberEntity(String loginId, String loginPass) {
 		this.loginId = loginId;
 	    this.loginPass = loginPass;	
 	}
 }
+

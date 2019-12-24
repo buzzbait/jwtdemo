@@ -1,4 +1,4 @@
-package com.buzz.jwtdemo.model;
+package com.buzz.jwtdemo.domain;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -10,6 +10,7 @@ import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
+
 /********************************************************************************************************************
  * 모든 Entity 에서 공통으로 사용하는 필드 정의
  * 해당 Entity 에서 상속 받아서 사용 한다.
@@ -17,10 +18,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @MappedSuperclass
-public class CommonEntity {
+public abstract class BaseCommonEntity {
 	@Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     protected Long id;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(insertable = false, updatable = true)
+	protected java.util.Date updDtm;	
+	
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(insertable = false, updatable = false)
