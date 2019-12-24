@@ -56,7 +56,7 @@ public class MemberEntity extends BaseCommonEntity {
     private ActiveStatus activeStatus;		
 	
 	@Enumerated(EnumType.ORDINAL)
-    private MemberLevel memberLevel;
+    private MemberLevel level;
 	
 	@Builder
 	public MemberEntity(String loginId, String loginPass) {
