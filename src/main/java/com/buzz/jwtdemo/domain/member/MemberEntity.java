@@ -59,9 +59,11 @@ public class MemberEntity extends BaseCommonEntity {
     private MemberLevel level;
 	
 	@Builder
-	public MemberEntity(String loginId, String loginPass) {
+	public MemberEntity(String loginId, String loginPass,MemberLevel level) {
 		this.loginId = loginId;
 	    this.loginPass = loginPass;	
+	    this.activeStatus = ActiveStatus.ON;
+	    this.level = level;	    
 	}
 }
 

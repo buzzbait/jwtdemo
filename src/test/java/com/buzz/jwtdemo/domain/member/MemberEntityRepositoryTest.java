@@ -45,8 +45,8 @@ class MemberEntityRepositoryTest {
 		
 		if(optMember.isPresent()) {
 			MemberEntity member = optMember.get();
-			member.setLoginPass("ddd121");
-			member.setUpdDtm(LocalDateTime.now());
+			member.setLoginPass("ddd126");
+			//member.setUpdDtm(LocalDateTime.now());
 		}else {
 			fail("member not found.......");
 		}
