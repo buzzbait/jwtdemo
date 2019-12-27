@@ -48,9 +48,9 @@ public class UserController {
 	
 	//PostMapping -> Insert
 	@PostMapping({"/v1/manage", "/v1.5/manage"})
-    public ResponseEntity<HashMap<String,Object>> newUser(@RequestBody HashMap<String,Object> user) {
+    public ResponseEntity<HashMap<String,Object>> newUser(@RequestBody HashMap<String,Object> newUser) {
     	
-		HashMap<String,Object> result =  _userService.addUser(user);		
+		HashMap<String,Object> result =  _userService.addUser(newUser);		
     	return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.OK);        
     }
 	

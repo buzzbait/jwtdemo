@@ -4,18 +4,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.modelmapper.ModelMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ import com.buzz.jwtdemo.domain.member.MemberEntity;
 import com.buzz.jwtdemo.domain.member.MemberEntityRepository;
 import com.buzz.jwtdemo.enumerate.MemberLevel;
 import com.buzz.jwtdemo.enumerate.RoleName;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -47,12 +46,12 @@ class MemberRoleEntityRepositoryTest {
 	private MemberRoleEntityRepository _memberRoleEntityRepository;
 	
 	
-	@Disabled
+	//@Disabled
 	@Rollback(false)
 	@Test
 	void test_addNewMember() {
 		MemberEntity member = MemberEntity.builder()
-				.loginId("test00001")
+				.loginId("testran")
 				.loginPass("passss")
 				.level(MemberLevel.MANAGER)
 				.build();
@@ -111,6 +110,7 @@ class MemberRoleEntityRepositoryTest {
 		memberEntity.setLoginPass("updateesss");
 	}
 	
+	@Disabled
 	@Test
 	void test_findQueryDsl() {
 		

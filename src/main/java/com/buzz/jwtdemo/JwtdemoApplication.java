@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /************************************************************************************************************
  * @EnableTransactionManagement
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * - Entity 의 생성일,수정일등 반복적으로 사용하는 필드에 대한 자동 설정값을 위해 활성화 
  ************************************************************************************************************/
 @SpringBootApplication
-@EnableTransactionManagement
+//@EnableTransactionManagement //spring-boot 에서는 필요 없음
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableJpaAuditing
 public class JwtdemoApplication {

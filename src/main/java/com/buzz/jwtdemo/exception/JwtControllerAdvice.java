@@ -61,7 +61,7 @@ public class JwtControllerAdvice {
 	public ResponseEntity<HashMap<String,Object>> normalException(Exception ex) {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 	    
-		_logger.error("Controller Exception : {}",ex.getMessage());
+		_logger.error("Controller Exception : {}",ex.getLocalizedMessage());
 		
 		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_ERROR);
 	    result.put(ResponseConstants.MESSAGE, MessageUtil.getMessage(JwtMessageKey.MSG_KEY_ERROR));

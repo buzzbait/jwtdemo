@@ -11,21 +11,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.buzz.jwtdemo.common.JwtMessageKey;
 import com.buzz.jwtdemo.common.MessageUtil;
 import com.buzz.jwtdemo.common.ResponseConstants;
 import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
+import com.buzz.jwtdemo.domain.member.MemberEntity;
+import com.buzz.jwtdemo.domain.member.MemberEntityRepository;
+import com.buzz.jwtdemo.domain.memberrole.MemberRoleEntity;
 import com.buzz.jwtdemo.domain.memberrole.MemberRoleEntityRepository;
+import com.buzz.jwtdemo.enumerate.MemberLevel;
+import com.buzz.jwtdemo.enumerate.RoleName;
 
 @Service
+@Transactional(readOnly = false)
 public class UserService extends JwtBaseService{
 	
 	private static Logger _logger = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
+	private MemberEntityRepository _memberEntityRepository;
+	
+	@Autowired
 	private MemberRoleEntityRepository _memberRoleEntityRepository;
 	
+	@Transactional(readOnly = true)
 	public HashMap<String,Object> allMember(){
 		
 		HashMap<String,Object> result = this.makeResultMap();
@@ -35,9 +46,7 @@ public class UserService extends JwtBaseService{
 		List<MemberDomainDTO.MemberRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDate,endDate);
 				
 		result.put(ResponseConstants.DATA, memberRoleList);
-		result.put(ResponseConstants.STATUS, ResponseConstants.RESULT_SUCCESS);
-		result.put(ResponseConstants.MESSAGE,MessageUtil.getMessage(JwtMessageKey.MSG_KEY_OK ) );
-		
+				
 		return result;		
 	}
 	
@@ -50,15 +59,35 @@ public class UserService extends JwtBaseService{
 		
 		return result;
 	}
-	
-	public HashMap<String,Object> addUser(HashMap<String,Object> user){
+
+	//신규유저 추가	
+	public HashMap<String,Object> addUser(HashMap<String,Object> newUser){
 		HashMap<String,Object> result = this.makeResultMap();
 		
-		_logger.debug("add user : {} ",user.get("userId").toString());
+		String loginId = newUser.get("loginId").toString();
+		String loginPass = newUser.get("loginPass").toString();
 		
-		//response flag 설정
-		result.put(ResponseConstants.STATUS, ResponseConstants.RESULT_SUCCESS);
-		result.put(ResponseConstants.MESSAGE,MessageUtil.getMessage(JwtMessageKey.MSG_KEY_OK ) );
+		MemberEntity member = MemberEntity.builder()
+				.loginId(loginId)
+				.loginPass(loginPass)
+				.level(MemberLevel.MANAGER)
+				.build();
+		
+		_memberEntityRepository.save(member);
+		
+		MemberRoleEntity memberRole1 = MemberRoleEntity.builder()
+				.member(member)
+				.role(RoleName.ADMIN)
+				.build();
+		
+		MemberRoleEntity memberRole2 = MemberRoleEntity.builder()
+				.member(member)
+				.role(RoleName.USER)
+				.build();
+		
+		_memberRoleEntityRepository.save(memberRole1);
+		_memberRoleEntityRepository.save(memberRole2);
+			
 		
 		return result;
 	}
