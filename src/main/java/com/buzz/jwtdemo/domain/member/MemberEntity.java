@@ -5,7 +5,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
-import com.buzz.jwtdemo.domain.BaseCommonEntity;
+import com.buzz.jwtdemo.domain.common.BaseCommonEntity;
 import com.buzz.jwtdemo.enumerate.ActiveStatus;
 import com.buzz.jwtdemo.enumerate.MemberLevel;
 import com.buzz.jwtdemo.enumerate.RoleName;

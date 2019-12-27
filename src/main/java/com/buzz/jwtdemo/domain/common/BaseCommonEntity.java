@@ -1,4 +1,4 @@
-package com.buzz.jwtdemo.domain;
+package com.buzz.jwtdemo.domain.common;
 
 
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ import lombok.Getter;
 /********************************************************************************************************************
  * 모든 Entity 에서 공통으로 사용하는 필드 정의
  * 해당 Entity 에서 상속 받아서 사용 한다.
- * AuditingEntityListener 사용을 위해 @EnableJpaAuditing 를 추가해야 한다
+ * AuditingEntityListener 사용을 위해 @EnableJpaAuditing 를 추가해야 한다( @LastModifiedDate,@CreatedDate 자동설정)
  ********************************************************************************************************************/
 @Getter
 @MappedSuperclass

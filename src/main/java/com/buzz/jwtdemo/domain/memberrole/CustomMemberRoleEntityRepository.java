@@ -1,0 +1,12 @@
+package com.buzz.jwtdemo.domain.memberrole;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
+
+public interface CustomMemberRoleEntityRepository {
+	List<MemberRoleEntity> findMemberRoleList();
+	List<MemberDomainDTO.MemberRoleDto> viewMemberRoleList(LocalDateTime startDate,LocalDateTime endDate);
+}

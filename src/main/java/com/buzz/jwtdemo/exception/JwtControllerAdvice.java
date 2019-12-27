@@ -2,6 +2,8 @@ package com.buzz.jwtdemo.exception;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -17,6 +19,8 @@ import com.buzz.jwtdemo.common.ResponseConstants;
 @RestControllerAdvice
 public class JwtControllerAdvice {
 
+	private static Logger _logger = LoggerFactory.getLogger(JwtControllerAdvice.class);
+	
 	/**********************************************************************************************
 	 * @PreAuthorize 어노테이션이 사용된 컨트롤러중 권한이 없어서 발생하는 오류 Catch.......
 	 * API 주소레벨 권한은 있지만 메소드 레벨에 권한이 없는 경우 
@@ -54,9 +58,11 @@ public class JwtControllerAdvice {
 	 * 일반적인 오류	 
 	 **********************************************************************************************/
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<HashMap<String,Object>> normalException() {
+	public ResponseEntity<HashMap<String,Object>> normalException(Exception ex) {
 		HashMap<String,Object> result = new HashMap<String,Object>();
-	        
+	    
+		_logger.error("Controller Exception : {}",ex.getMessage());
+		
 		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_ERROR);
 	    result.put(ResponseConstants.MESSAGE, MessageUtil.getMessage(JwtMessageKey.MSG_KEY_ERROR));
 	            

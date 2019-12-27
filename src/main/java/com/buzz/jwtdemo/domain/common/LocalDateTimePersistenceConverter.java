@@ -1,4 +1,4 @@
-package com.buzz.jwtdemo.domain;
+package com.buzz.jwtdemo.domain.common;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

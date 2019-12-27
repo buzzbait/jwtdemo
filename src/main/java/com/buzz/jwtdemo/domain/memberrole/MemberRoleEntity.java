@@ -8,9 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.buzz.jwtdemo.domain.BaseCommonEntity;
+import com.buzz.jwtdemo.domain.common.BaseCommonEntity;
 import com.buzz.jwtdemo.domain.member.MemberEntity;
 import com.buzz.jwtdemo.enumerate.RoleName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,6 +28,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = {"id"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MemberRoleEntity extends BaseCommonEntity {
 
 	/********************************************************************************************************

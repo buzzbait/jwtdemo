@@ -2,6 +2,7 @@ package com.buzz.jwtdemo.config;
 
 import java.util.Locale;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -58,4 +59,13 @@ public class JwtWebMvcConfigurer implements WebMvcConfigurer{
 		
 		registry.addInterceptor(localeChangeInterceptor());
 	}
+	
+	//Jpa Entity -> DTO 변환을 위함
+	@Bean
+	public ModelMapper modelMapper() {
+	    return new ModelMapper();
+	}
+
+
+	
 }

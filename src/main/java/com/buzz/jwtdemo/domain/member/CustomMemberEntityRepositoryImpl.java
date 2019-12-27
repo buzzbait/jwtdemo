@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import com.buzz.jwtdemo.enumerate.ActiveStatus;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 /*******************************************************************************************************
  * QueryDSL 를 이용해서 쿼리 구현
+ * BooleanBuilder 를 사용해서 Dynamic 조건 구성
  *******************************************************************************************************/
 public class CustomMemberEntityRepositoryImpl extends QuerydslRepositorySupport implements CustomMemberEntityRepository  {
 
@@ -14,14 +17,27 @@ public class CustomMemberEntityRepositoryImpl extends QuerydslRepositorySupport 
     public CustomMemberEntityRepositoryImpl() {
         super(MemberEntity.class);
     }
-    
+        
     @Override
     public List<MemberEntity> findActiveMember(){
     	final QMemberEntity member = QMemberEntity.memberEntity;
    	
+    	/* BooleanBuilder 사용예시
+    	BooleanBuilder builder = new BooleanBuilder();
+    	builder.and(member.activeStatus.eq(ActiveStatus.ON));
+    	    	
     	return from(member)
-    			.where(member.activeStatus.eq(ActiveStatus.ON))
+    			.where(builder)
     			.fetch();    	
+    	*/
     	
+    	return from(member)
+    			.where(_isActiveUser(member))
+    			.fetch();  
+    }
+    
+    //중복으로 사용되는 조건은 extract method 를 통해서 재사용한다
+    private BooleanExpression _isActiveUser(QMemberEntity member) {
+    	return member.activeStatus.eq(ActiveStatus.ON);
     }
 }

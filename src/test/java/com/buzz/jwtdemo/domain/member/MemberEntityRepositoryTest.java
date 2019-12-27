@@ -27,7 +27,7 @@ class MemberEntityRepositoryTest {
 	@Autowired
 	private MemberEntityRepository _memberEntityRepository;
 
-	@Disabled
+	//@Disabled
 	@Test
 	void test_findByActiveMember() {
 		
@@ -37,6 +37,7 @@ class MemberEntityRepositoryTest {
 
 	}
 	
+	@Disabled
 	@Rollback(false)	
 	@Test
 	void test_updateMember() {
