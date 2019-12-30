@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  *  실제 Spring Security 에 넘길때는 앞에 "ROLE_" 이 붙어야 한다
  ***************************************************************************************************/
 @JsonFormat(shape = JsonFormat.Shape.STRING)
-public enum RoleName {
+public enum EnumRoleName {
 	ADMIN
 	,USER
 	,GUEST

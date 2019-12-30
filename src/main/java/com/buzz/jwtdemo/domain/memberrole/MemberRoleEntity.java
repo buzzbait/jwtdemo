@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import com.buzz.jwtdemo.domain.common.BaseCommonEntity;
 import com.buzz.jwtdemo.domain.member.MemberEntity;
-import com.buzz.jwtdemo.enumerate.RoleName;
+import com.buzz.jwtdemo.enumerate.EnumRoleName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AccessLevel;
@@ -40,10 +40,10 @@ public class MemberRoleEntity extends BaseCommonEntity {
 	private MemberEntity member;
 	
 	@Enumerated(EnumType.STRING)
-    private RoleName roleName;		
+    private EnumRoleName roleName;		
 		
 	@Builder
-	public MemberRoleEntity(MemberEntity member, RoleName role) {
+	public MemberRoleEntity(MemberEntity member, EnumRoleName role) {
 		this.member = member;
 		this.roleName = role;
 	}

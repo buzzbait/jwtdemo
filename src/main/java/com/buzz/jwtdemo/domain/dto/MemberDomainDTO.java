@@ -2,9 +2,9 @@ package com.buzz.jwtdemo.domain.dto;
 
 import java.time.LocalDateTime;
 
-import com.buzz.jwtdemo.enumerate.ActiveStatus;
-import com.buzz.jwtdemo.enumerate.MemberLevel;
-import com.buzz.jwtdemo.enumerate.RoleName;
+import com.buzz.jwtdemo.enumerate.EnumActiveStatus;
+import com.buzz.jwtdemo.enumerate.EnumMemberLevel;
+import com.buzz.jwtdemo.enumerate.EnumRoleName;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,16 +24,16 @@ public class MemberDomainDTO {
 		private Long Id;
 		private String loginId;
 		private String loginPass;	    
-		private ActiveStatus activeStatus;
+		private EnumActiveStatus activeStatus;
 		private String activeStatusName;
-		private MemberLevel level;	
+		private EnumMemberLevel level;	
 	}
 	
 	@Getter
 	@Setter
 	public static class MemberWithRoleDto extends CommonDto{
 		private Long Id;
-		private RoleName roleName;
+		private EnumRoleName roleName;
 		private MemberDto memberDto;
 	}
 	
@@ -45,8 +45,8 @@ public class MemberDomainDTO {
 		private Long memberId;
 		private String loginId;		
 		private String loginPass;
-		private RoleName roleName;	
-		private ActiveStatus activeStatus;
-		private MemberLevel level;		
+		private EnumRoleName roleName;	
+		private EnumActiveStatus activeStatus;
+		private EnumMemberLevel level;		
 	}
 }

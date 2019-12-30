@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
 import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberDto;
-import com.buzz.jwtdemo.enumerate.ActiveStatus;
+import com.buzz.jwtdemo.enumerate.EnumActiveStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -56,6 +56,6 @@ public class CustomMemberEntityRepositoryImpl extends QuerydslRepositorySupport 
     
     //중복으로 사용되는 조건은 extract method 를 통해서 재사용한다
     private BooleanExpression _isActiveUser(QMemberEntity member) {
-    	return member.activeStatus.eq(ActiveStatus.ON);
+    	return member.activeStatus.eq(EnumActiveStatus.ON);
     }
 }

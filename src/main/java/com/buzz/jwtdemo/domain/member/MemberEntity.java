@@ -6,9 +6,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.buzz.jwtdemo.domain.common.BaseCommonEntity;
-import com.buzz.jwtdemo.enumerate.ActiveStatus;
-import com.buzz.jwtdemo.enumerate.MemberLevel;
-import com.buzz.jwtdemo.enumerate.RoleName;
+import com.buzz.jwtdemo.enumerate.EnumActiveStatus;
+import com.buzz.jwtdemo.enumerate.EnumMemberLevel;
+import com.buzz.jwtdemo.enumerate.EnumRoleName;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -53,16 +53,16 @@ public class MemberEntity extends BaseCommonEntity {
 	private String loginPass;
 	
 	@Enumerated(EnumType.ORDINAL)
-    private ActiveStatus activeStatus;		
+    private EnumActiveStatus activeStatus;		
 	
 	@Enumerated(EnumType.ORDINAL)
-    private MemberLevel level;
+    private EnumMemberLevel level;
 	
 	@Builder
-	public MemberEntity(String loginId, String loginPass,MemberLevel level) {
+	public MemberEntity(String loginId, String loginPass,EnumMemberLevel level) {
 		this.loginId = loginId;
 	    this.loginPass = loginPass;	
-	    this.activeStatus = ActiveStatus.ON;
+	    this.activeStatus = EnumActiveStatus.ON;
 	    this.level = level;	    
 	}
 }

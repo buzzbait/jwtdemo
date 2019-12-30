@@ -25,8 +25,8 @@ import com.buzz.jwtdemo.domain.member.MemberEntity;
 import com.buzz.jwtdemo.domain.member.MemberEntityRepository;
 import com.buzz.jwtdemo.domain.memberrole.MemberRoleEntity;
 import com.buzz.jwtdemo.domain.memberrole.MemberRoleEntityRepository;
-import com.buzz.jwtdemo.enumerate.MemberLevel;
-import com.buzz.jwtdemo.enumerate.RoleName;
+import com.buzz.jwtdemo.enumerate.EnumMemberLevel;
+import com.buzz.jwtdemo.enumerate.EnumRoleName;
 
 @Service
 @Transactional(readOnly = false)
@@ -109,19 +109,19 @@ public class UserService extends JwtBaseService{
 		MemberEntity member = MemberEntity.builder()
 				.loginId(loginId)
 				.loginPass(loginPass)
-				.level(MemberLevel.MANAGER)
+				.level(EnumMemberLevel.MANAGER)
 				.build();
 		
 		_memberEntityRepository.save(member);
 		
 		MemberRoleEntity memberRole1 = MemberRoleEntity.builder()
 				.member(member)
-				.role(RoleName.ADMIN)
+				.role(EnumRoleName.ADMIN)
 				.build();
 		
 		MemberRoleEntity memberRole2 = MemberRoleEntity.builder()
 				.member(member)
-				.role(RoleName.USER)
+				.role(EnumRoleName.USER)
 				.build();
 		
 		_memberRoleEntityRepository.save(memberRole1);

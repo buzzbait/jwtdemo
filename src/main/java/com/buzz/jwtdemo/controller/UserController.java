@@ -19,7 +19,7 @@ import com.buzz.jwtdemo.common.ResponseConstants;
 import com.buzz.jwtdemo.service.UserService;
 
 /*******************************************************************************************************************
- * API 버저닝은 URL/서비스명/버저닝/메소드명
+ * API 버저닝은 URL/서비스명/버저닝/메소드명 - 소문자로만 구성한다
  * ex) api.jwtservice.com/user/v1/info
  * 
  * Controller의 Return Type 은 ResponseEntity<T> 로 설정하고 Service layer 의 Return Type 은 T로 지정 한다
