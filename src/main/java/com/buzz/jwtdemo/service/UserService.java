@@ -18,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.buzz.jwtdemo.common.JwtMessageKey;
 import com.buzz.jwtdemo.common.MessageUtil;
 import com.buzz.jwtdemo.common.ResponseConstants;
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberDto;
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberWithRoleDto;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain.MemberDto;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain.MemberWithRoleDto;
 import com.buzz.jwtdemo.domain.member.MemberEntity;
 import com.buzz.jwtdemo.domain.member.MemberEntityRepository;
 import com.buzz.jwtdemo.domain.memberrole.MemberRoleEntity;
@@ -82,7 +82,7 @@ public class UserService extends JwtBaseService{
 		
 		LocalDateTime startDate = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
 		LocalDateTime endDate = startDate.plusDays(1);
-		List<MemberDomainDTO.MemberWithRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDate,endDate);
+		List<MemberDtoDomain.MemberWithRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDate,endDate);
 						
 		result.put(ResponseConstants.DATA, memberRoleList);
 				

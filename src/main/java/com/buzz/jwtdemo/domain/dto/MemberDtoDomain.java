@@ -16,7 +16,7 @@ import lombok.Setter;
  * enum,datetime 형식은 모두 Enity 의 타입과 동일하게 맞추고 Json 변환시 규칙에 맞게 변환 해 준다.
  * enum 은 선언 클래스에서 문자열로 할지 순번으로 할지 지정해 준다 
  ************************************************************************************************/
-public class MemberDomainDTO {
+public class MemberDtoDomain {
 
 	@Getter
 	@Setter

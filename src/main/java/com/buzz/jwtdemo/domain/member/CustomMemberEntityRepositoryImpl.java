@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberDto;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain.MemberDto;
 import com.buzz.jwtdemo.enumerate.EnumActiveStatus;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -44,7 +44,7 @@ public class CustomMemberEntityRepositoryImpl extends QuerydslRepositorySupport 
     public List<MemberDto> findAllMember(){
     	final QMemberEntity member = QMemberEntity.memberEntity;
     	return from(member)
-    			.select(Projections.bean(MemberDomainDTO.MemberDto.class
+    			.select(Projections.bean(MemberDtoDomain.MemberDto.class
     					,member.id
     					,member.loginId
     					,member.loginPass

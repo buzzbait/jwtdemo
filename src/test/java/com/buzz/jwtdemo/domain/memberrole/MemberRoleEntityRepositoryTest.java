@@ -24,9 +24,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberDto;
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberWithRoleDto;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain.MemberDto;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain.MemberWithRoleDto;
 import com.buzz.jwtdemo.domain.member.MemberEntity;
 import com.buzz.jwtdemo.domain.member.MemberEntityRepository;
 import com.buzz.jwtdemo.enumerate.EnumMemberLevel;
@@ -146,10 +146,10 @@ class MemberRoleEntityRepositoryTest {
 		LocalDateTime startDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
 		LocalDateTime endDateTime = startDateTime.plusDays(1);
 		
-		List<MemberDomainDTO.MemberWithRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDateTime,endDateTime);
+		List<MemberDtoDomain.MemberWithRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDateTime,endDateTime);
 				
 				
-		for(MemberDomainDTO.MemberWithRoleDto memberRole : memberRoleList) {
+		for(MemberDtoDomain.MemberWithRoleDto memberRole : memberRoleList) {
 			logger.debug("LOGIN ID : {} - ROLE NAME : {}", memberRole.getMemberDto().getLoginId(),memberRole.getRoleName());
 		}
 		

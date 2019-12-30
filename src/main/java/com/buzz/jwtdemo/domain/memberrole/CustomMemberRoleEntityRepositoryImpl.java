@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
+import com.buzz.jwtdemo.domain.dto.MemberDtoDomain;
 import com.buzz.jwtdemo.domain.member.QMemberEntity;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
@@ -36,7 +36,7 @@ public class CustomMemberRoleEntityRepositoryImpl extends QuerydslRepositorySupp
     
     //Entity  가 아닌 DTO 에 매핑하여 반환
     @Override
-	public List<MemberDomainDTO.MemberWithRoleDto> viewMemberRoleList(LocalDateTime startDate,LocalDateTime endDate){
+	public List<MemberDtoDomain.MemberWithRoleDto> viewMemberRoleList(LocalDateTime startDate,LocalDateTime endDate){
 		 
     	final QMemberEntity member = QMemberEntity.memberEntity;
     	final QMemberRoleEntity memberRole = QMemberRoleEntity.memberRoleEntity;
@@ -73,10 +73,10 @@ public class CustomMemberRoleEntityRepositoryImpl extends QuerydslRepositorySupp
     	
     	return from(memberRole)
     			.select(
-    					Projections.bean(MemberDomainDTO.MemberWithRoleDto.class
+    					Projections.bean(MemberDtoDomain.MemberWithRoleDto.class
     							,memberRole.id
     							,memberRole.roleName
-    							, Projections.bean(MemberDomainDTO.MemberDto.class
+    							, Projections.bean(MemberDtoDomain.MemberDto.class
     										,memberRole.member.id
     										,memberRole.member.loginId
     	                                    ,memberRole.member.loginPass
