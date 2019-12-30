@@ -8,5 +8,5 @@ import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
 
 public interface CustomMemberRoleEntityRepository {
 	List<MemberRoleEntity> findMemberRoleList();
-	List<MemberDomainDTO.MemberRoleDto> viewMemberRoleList(LocalDateTime startDate,LocalDateTime endDate);
+	List<MemberDomainDTO.MemberWithRoleDto> viewMemberRoleList(LocalDateTime startDate,LocalDateTime endDate);
 }

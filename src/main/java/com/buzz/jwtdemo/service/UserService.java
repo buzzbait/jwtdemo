@@ -3,12 +3,14 @@ package com.buzz.jwtdemo.service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import com.buzz.jwtdemo.common.JwtMessageKey;
 import com.buzz.jwtdemo.common.MessageUtil;
 import com.buzz.jwtdemo.common.ResponseConstants;
 import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
+import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberDto;
+import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberWithRoleDto;
 import com.buzz.jwtdemo.domain.member.MemberEntity;
 import com.buzz.jwtdemo.domain.member.MemberEntityRepository;
 import com.buzz.jwtdemo.domain.memberrole.MemberRoleEntity;
@@ -41,10 +45,45 @@ public class UserService extends JwtBaseService{
 		
 		HashMap<String,Object> result = this.makeResultMap();
 		
+		/*LocalDateTime startDate = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+		LocalDateTime endDate = startDate.plusDays(1);
+		List<MemberDomainDTO.MemberRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDate,endDate);*/
+		
+		/*서비스 Layer에서 Entity -> DTO 변환 */
+		List<MemberRoleEntity> memberRoleList = _memberRoleEntityRepository.findMemberRoleList();
+		
+		List<MemberWithRoleDto> memberRoleDtoList = new ArrayList<MemberWithRoleDto>();
+		
+		for(MemberRoleEntity memberRole : memberRoleList ) {
+			MemberWithRoleDto memberWithRole =  new MemberWithRoleDto();
+			memberWithRole.setMemberDto(new MemberDto());
+			
+			//MemberRoleEntity -> MemberRoleDTO 변환
+			BeanUtils.copyProperties(memberRole, memberWithRole);
+						
+			//MemberEntity -> MemberDTO 변환
+			BeanUtils.copyProperties(memberRole.getMember(), memberWithRole.getMemberDto() );
+									
+			memberRoleDtoList.add(memberWithRole);
+		}
+				
+		result.put(ResponseConstants.DATA, memberRoleDtoList);
+				
+		return result;		
+	}
+	
+	/*************************************************************************************************************
+	 * Repository 에서 Entity -> DTO를 변환하는 Case
+	 *************************************************************************************************************/
+	@Transactional(readOnly = true)
+	public HashMap<String,Object> periodMember(){
+		
+		HashMap<String,Object> result = this.makeResultMap();
+		
 		LocalDateTime startDate = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
 		LocalDateTime endDate = startDate.plusDays(1);
-		List<MemberDomainDTO.MemberRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDate,endDate);
-				
+		List<MemberDomainDTO.MemberWithRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDate,endDate);
+						
 		result.put(ResponseConstants.DATA, memberRoleList);
 				
 		return result;		

@@ -46,6 +46,13 @@ public class UserController {
     	return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.OK);        
     }
 	
+	@GetMapping({"/v1/periodmember", "/v1.5/periodmember"})
+    public ResponseEntity<HashMap<String,Object>> periodMember() {
+    	
+		HashMap<String,Object> result =  _userService.periodMember();		
+    	return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.OK);        
+    }
+	
 	//PostMapping -> Insert
 	@PostMapping({"/v1/manage", "/v1.5/manage"})
     public ResponseEntity<HashMap<String,Object>> newUser(@RequestBody HashMap<String,Object> newUser) {

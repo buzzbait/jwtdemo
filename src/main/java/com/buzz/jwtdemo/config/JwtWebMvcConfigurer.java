@@ -16,6 +16,8 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import com.buzz.jwtdemo.common.MessageUtil;
+import com.buzz.jwtdemo.enumerate.ActiveStatus;
+import com.buzz.jwtdemo.enumerate.EnumMapper;
 
 
 @Configuration
@@ -65,7 +67,16 @@ public class JwtWebMvcConfigurer implements WebMvcConfigurer{
 	public ModelMapper modelMapper() {
 	    return new ModelMapper();
 	}
-
+	
+	@Bean
+	public EnumMapper enumMapper() {
+		EnumMapper enumMapper =  new EnumMapper();
+		
+		//모든 코드 enum 클래스 등록
+		enumMapper.put("ACTIVE_STATUS",ActiveStatus.class );
+		
+		return enumMapper;
+	}
 
 	
 }

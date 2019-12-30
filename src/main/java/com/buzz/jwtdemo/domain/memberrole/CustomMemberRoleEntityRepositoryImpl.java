@@ -8,9 +8,13 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
 import com.buzz.jwtdemo.domain.member.QMemberEntity;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 
-
+/*********************************************************************************************************************
+ * Entity -> DTO 변환을 Repository Layer 에서 할 것인지 , Servicce Layer 에서 할 것인지 결정
+ *********************************************************************************************************************/
 public class CustomMemberRoleEntityRepositoryImpl extends QuerydslRepositorySupport implements CustomMemberRoleEntityRepository{
 
 	//QuerydslRepositorySupport 클래스에는 기본생성자가 없음.
@@ -32,7 +36,7 @@ public class CustomMemberRoleEntityRepositoryImpl extends QuerydslRepositorySupp
     
     //Entity  가 아닌 DTO 에 매핑하여 반환
     @Override
-	public List<MemberDomainDTO.MemberRoleDto> viewMemberRoleList(LocalDateTime startDate,LocalDateTime endDate){
+	public List<MemberDomainDTO.MemberWithRoleDto> viewMemberRoleList(LocalDateTime startDate,LocalDateTime endDate){
 		 
     	final QMemberEntity member = QMemberEntity.memberEntity;
     	final QMemberRoleEntity memberRole = QMemberRoleEntity.memberRoleEntity;
@@ -51,25 +55,46 @@ public class CustomMemberRoleEntityRepositoryImpl extends QuerydslRepositorySupp
     		goe,lt 를 사용 하여 확실하게 당일 등록 만 검색
     		goe : greater or equal ( >= )
     		lt :  <
+    		
+    		JPASubQuery 는 과거버전이고 최신버전에서는 JPAExpressions 을 사용 한다
     	**********************************************************************************************/
     	
     	BooleanBuilder builder = new BooleanBuilder();
     	//builder.and(memberRole.member.crtDtm.between(startDate, endDate));
     	builder.and(memberRole.member.crtDtm.goe(startDate).and(memberRole.member.crtDtm.lt(endDate)));
-    	    	 
+    	
+    	/*Where 절의 SubQuery는 JPAExpressions 를 이용 한다 
+    	 * builder.and(academy.id.in(
+                 JPAExpressions
+                         .select(student.academy.id)
+                         .from(student)
+                         .where(student.id.eq(studentId))))
+    	 */
+    	
     	return from(memberRole)
     			.select(
-    					Projections.bean(MemberDomainDTO.MemberRoleDto.class
+    					Projections.bean(MemberDomainDTO.MemberWithRoleDto.class
     							,memberRole.id
     							,memberRole.roleName
-    							,memberRole.member.id.as("memberId")
-    							,memberRole.member.loginId
-    							,memberRole.member.loginPass
-    							,memberRole.member.activeStatus
-    							,memberRole.member.level
+    							, Projections.bean(MemberDomainDTO.MemberDto.class
+    										,memberRole.member.id
+    										,memberRole.member.loginId
+    	                                    ,memberRole.member.loginPass
+    	                                    ,memberRole.member.activeStatus
+    	                                    ,memberRole.member.level
+    	                                    ,memberRole.member.updDtm
+    	                                    ,memberRole.member.crtDtm
+    	                            ).as("memberDto")    							
     							,memberRole.updDtm
-    							,memberRole.crtDtm
-    							,memberRole.member
+    							,memberRole.crtDtm    						
+    							
+    							/* SELECT 절의 SubQuery 는 아래와 같이 구현 
+    							 * ,ExpressionUtils.as(
+    		                                JPAExpressions.select(count(student.id))
+    		                                        .from(student)
+    		                                        .where(student.academy.eq(academy)),
+    		                                "studentCount")*/
+    							
     							))
     			.innerJoin(memberRole.member, member)
     			.where(builder)

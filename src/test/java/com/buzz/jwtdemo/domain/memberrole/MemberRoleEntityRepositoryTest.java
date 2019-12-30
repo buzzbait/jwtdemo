@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -24,6 +25,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.buzz.jwtdemo.domain.dto.MemberDomainDTO;
+import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberDto;
+import com.buzz.jwtdemo.domain.dto.MemberDomainDTO.MemberWithRoleDto;
 import com.buzz.jwtdemo.domain.member.MemberEntity;
 import com.buzz.jwtdemo.domain.member.MemberEntityRepository;
 import com.buzz.jwtdemo.enumerate.MemberLevel;
@@ -46,7 +49,7 @@ class MemberRoleEntityRepositoryTest {
 	private MemberRoleEntityRepository _memberRoleEntityRepository;
 	
 	
-	//@Disabled
+	@Disabled
 	@Rollback(false)
 	@Test
 	void test_addNewMember() {
@@ -110,6 +113,31 @@ class MemberRoleEntityRepositoryTest {
 		memberEntity.setLoginPass("updateesss");
 	}
 	
+	//@Disabled
+	@Test
+	void test_findAll() {
+						
+		List<MemberRoleEntity> memberRoleList = _memberRoleEntityRepository.findMemberRoleList();
+		
+		List<MemberWithRoleDto> memberWithRoleList = new ArrayList<MemberWithRoleDto>();
+		
+		for(MemberRoleEntity memberRole : memberRoleList ) {
+			MemberWithRoleDto memberWithRole =  new MemberWithRoleDto();
+			memberWithRole.setMemberDto(new MemberDto());
+			BeanUtils.copyProperties(memberRole, memberWithRole);
+						
+			BeanUtils.copyProperties(memberRole.getMember(), memberWithRole.getMemberDto() );
+									
+			memberWithRoleList.add(memberWithRole);
+		}
+		
+		for(MemberWithRoleDto memberRole : memberWithRoleList) {
+			logger.debug("LOGIN ID : {} - ROLE NAME : {}", memberRole.getMemberDto().getLoginId() ,memberRole.getRoleName().toString());
+		}
+		
+		//assertEquals(7, memberRoleList.size());
+	}
+	
 	@Disabled
 	@Test
 	void test_findQueryDsl() {
@@ -118,11 +146,11 @@ class MemberRoleEntityRepositoryTest {
 		LocalDateTime startDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
 		LocalDateTime endDateTime = startDateTime.plusDays(1);
 		
-		List<MemberDomainDTO.MemberRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDateTime,endDateTime);
+		List<MemberDomainDTO.MemberWithRoleDto> memberRoleList = _memberRoleEntityRepository.viewMemberRoleList(startDateTime,endDateTime);
 				
 				
-		for(MemberDomainDTO.MemberRoleDto memberRole : memberRoleList) {
-			logger.debug("LOGIN ID : {} - ROLE NAME : {}", memberRole.getMemberId(),memberRole.getRoleName());
+		for(MemberDomainDTO.MemberWithRoleDto memberRole : memberRoleList) {
+			logger.debug("LOGIN ID : {} - ROLE NAME : {}", memberRole.getMemberDto().getLoginId(),memberRole.getRoleName());
 		}
 		
 		assertEquals(7, memberRoleList.size());

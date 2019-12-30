@@ -20,13 +20,23 @@ public class MemberDomainDTO {
 
 	@Getter
 	@Setter
-	public static class MemberDto{
+	public static class MemberDto extends CommonDto{
+		private Long Id;
 		private String loginId;
-		private String loginPass;		
-	    
-	    private LocalDateTime updDtm;
-	    private LocalDateTime crtDtm;
+		private String loginPass;	    
+		private ActiveStatus activeStatus;
+		private String activeStatusName;
+		private MemberLevel level;	
 	}
+	
+	@Getter
+	@Setter
+	public static class MemberWithRoleDto extends CommonDto{
+		private Long Id;
+		private RoleName roleName;
+		private MemberDto memberDto;
+	}
+	
 	
 	@Getter
 	@Setter
