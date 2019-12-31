@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.buzz.jwtdemo.common.JwtMessageKey;
-import com.buzz.jwtdemo.common.MessageUtil;
 import com.buzz.jwtdemo.common.ResponseConstants;
+import com.buzz.jwtdemo.enumerate.EnumMessage;
 
 
 @RestControllerAdvice
@@ -33,7 +32,7 @@ public class JwtControllerAdvice {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 	        
 		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_NOTROLE);
-	    result.put(ResponseConstants.MESSAGE, MessageUtil.getMessage(JwtMessageKey.MSG_KEY_FORBIDDEN));
+	    result.put(ResponseConstants.MESSAGE, EnumMessage.ERROR_URL_FORBIDDEN.getMessage());
 	            
 	    return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.FORBIDDEN);
 	}	
@@ -49,9 +48,22 @@ public class JwtControllerAdvice {
 		HashMap<String,Object> result = new HashMap<String,Object>();
 	        
 		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_NOTFOUND);
-	    result.put(ResponseConstants.MESSAGE, MessageUtil.getMessage(JwtMessageKey.MSG_KEY_NOTFOUND));
+	    result.put(ResponseConstants.MESSAGE, EnumMessage.ERROR_URL_NOTFOUND.getMessage() );
 	            
 	    return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.NOT_FOUND);
+	}
+	
+	/**********************************************************************************************
+	 * 사용자 오류	 
+	 **********************************************************************************************/
+	@ExceptionHandler(UserRuntimeException .class)
+	public ResponseEntity<HashMap<String,Object>> userRuntimeException(UserRuntimeException ex) {
+		HashMap<String,Object> result = new HashMap<String,Object>();
+	    
+		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_ERROR);
+	    result.put(ResponseConstants.MESSAGE, ex.getUserError());
+	            
+	    return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	/**********************************************************************************************
@@ -64,7 +76,7 @@ public class JwtControllerAdvice {
 		_logger.error("Controller Exception : {}",ex.getLocalizedMessage());
 		
 		result.put(ResponseConstants.STATUS , ResponseConstants.RESULT_ERROR);
-	    result.put(ResponseConstants.MESSAGE, MessageUtil.getMessage(JwtMessageKey.MSG_KEY_ERROR));
+	    result.put(ResponseConstants.MESSAGE, EnumMessage.ERROR_REQUEST.getMessage());
 	            
 	    return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.INTERNAL_SERVER_ERROR);
 	}

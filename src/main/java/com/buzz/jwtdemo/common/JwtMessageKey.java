@@ -7,6 +7,7 @@ public class JwtMessageKey {
 	public static final String MSG_KEY_FORBIDDEN  	= "response.forbidden";
 	public static final String MSG_KEY_NOTAUTH 		= "response.notauth";	
 	public static final String MSG_KEY_OK 			= "response.ok";
-	public static final String MSG_KEY_ERROR 		= "response.error";		
+	public static final String MSG_KEY_ERROR 		= "response.error";	
+	public static final String MSG_KEY_ERROR_PARAM 	= "response.error.param";
 		
 }

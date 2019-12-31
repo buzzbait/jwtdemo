@@ -1,6 +1,8 @@
 package com.buzz.jwtdemo.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.buzz.jwtdemo.common.ControllerUtil;
 import com.buzz.jwtdemo.common.ResponseConstants;
 import com.buzz.jwtdemo.service.UserService;
 
@@ -47,8 +50,12 @@ public class UserController {
     }
 	
 	@GetMapping({"/v1/periodmember", "/v1.5/periodmember"})
-    public ResponseEntity<HashMap<String,Object>> periodMember() {
+    public ResponseEntity<HashMap<String,Object>> periodMember(@RequestParam HashMap<String, Object> filterQuery) {
     	
+		//파라미터 검증
+		List<String> checkParams =  Arrays.asList("startday","endday");
+		ControllerUtil.verifyParams(filterQuery, checkParams);
+		
 		HashMap<String,Object> result =  _userService.periodMember();		
     	return new ResponseEntity<HashMap<String,Object> >(result,HttpStatus.OK);        
     }

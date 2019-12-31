@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 /****************************************************************************************************
  * MessageUtil 클래스
+ * 사용법 : MessageUtil.getMessage(JwtMessageKey.MSG_KEY_ERROR)
+ * 메시지는 리소스를 사용하지 않고 Enum 으로 처리
  ****************************************************************************************************/
 @Component
 public class MessageUtil {
